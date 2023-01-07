@@ -66,6 +66,12 @@ void NahsBricksOS::handover() {
     FeatureAll.deliver(&out_json);
 
     //------------------------------------------
+    // deliver ident if it is set and Brick just initalized
+    if (!RTCmem.isValid() && FSdata["id"] != "") {
+        out_json.getOrAddMember("id").set(FSdata["id"]);
+    }
+
+    //------------------------------------------
     // deliver sketchMD5 if requested
     if (RTCdata->sketchMD5Requested) {
         RTCdata->sketchMD5Requested = false;
@@ -199,7 +205,7 @@ helper to transmit a json_document to BrickServer and receive the answer also as
 */
 DynamicJsonDocument NahsBricksOS::transmitToBrickServer(DynamicJsonDocument out_json) {
     String httpPayload;
-    httpPayload.reserve(1024);  // Prevent RAM fragmentation
+    httpPayload.reserve(2048);  // Prevent RAM fragmentation
     if (out_json.isNull()) httpPayload = "{}";
     else serializeJson(out_json, httpPayload);
     WiFiClient client;
@@ -236,6 +242,8 @@ void NahsBricksOS::printFSdata() {
     Serial.println(FSdata["pass"].as<String>());
     Serial.print("  BrickServer-URL: ");
     Serial.println(FSdata["url"].as<String>());
+    Serial.print("  Ident: ");
+    Serial.println(FSdata["id"].as<String>());
     Serial.println();
 }
 
@@ -265,6 +273,13 @@ helper to set BrickServer's URL
 */
 void NahsBricksOS::setBrickServerURL(String host, long port) {
     FSdata["url"] = "http://" + host + ":" + String(port);
+}
+
+/*
+helper to set Identity-String of Brick
+*/
+void NahsBricksOS::setIdent(String ident) {
+    FSdata["id"] = ident;
 }
 
 /*
@@ -313,6 +328,7 @@ void NahsBricksOS::begin() {
     if (!FSdata.containsKey("ssid")) FSdata["ssid"] = "";
     if (!FSdata.containsKey("pass")) FSdata["pass"] = "";
     if (!FSdata.containsKey("url")) FSdata["url"] = "";
+    if (!FSdata.containsKey("id")) FSdata["id"] = "";
     if (!RTCmem.isValid()) {
         RTCdata->sketchMD5Requested = false;
         RTCdata->otaUpdateRequested = false;

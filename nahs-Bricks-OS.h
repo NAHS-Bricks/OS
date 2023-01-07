@@ -8,8 +8,8 @@
 
 class NahsBricksOS {
     private:
-        static const uint8_t version = 2;
-        static const uint16_t copyrightYear = 2022;
+        static const uint8_t version = 3;
+        static const uint16_t copyrightYear = 2023;
         typedef struct {
             uint8_t channel;  // WiFi-Channel to be used
             uint8_t ap_mac[6];  // MAC-Address of AP to be used
@@ -36,6 +36,7 @@ class NahsBricksOS {
         void setWifiSSID(String ssid);
         void setWifiPass(String pass);
         void setBrickServerURL(String host, long port);
+        void setIdent(String ident);
         void requestFSmemWrite();
         void handleConfigResetRequest();
     private:

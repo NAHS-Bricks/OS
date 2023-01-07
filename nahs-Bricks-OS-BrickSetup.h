@@ -14,11 +14,14 @@ class NahsBricksOSBrickSetup {
         void showBrickInfo();
         void showConfig();
         void showRuntimeData();
+        void setIdent();
         void configWifi();
         void testWifi();
         void configBricksServer();
         void testBricksServer();
         void saveConfig();
+        void webSetupHandler();
+        void webSetupHandlerNotFound();
 };
 
 #if !defined(NO_GLOBAL_INSTANCES)
