@@ -1,6 +1,6 @@
 {
   "name": "nahs-Bricks-OS",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Implements the OS for NAHS-Bricks hardware under which all Brick specifica is tied together.",
   "keywords": "NAHS-Bricks, OS",
   "repository":

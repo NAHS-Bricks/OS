@@ -101,6 +101,10 @@ void NahsBricksOS::handover() {
                 case 12:
                     RTCdata->otaUpdateRequested = true;
                     break;
+                case 14:
+                    FSdata["id"] = "";
+                    requestFSmemWrite();
+                    break;
             }
         }
     }
