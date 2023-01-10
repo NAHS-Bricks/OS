@@ -11,7 +11,7 @@ ESP8266WebServer server(80);
 /*
 ISR that listens to falling-edges during BrickSetup
 */
-ICACHE_RAM_ATTR void configResetISR() {
+IRAM_ATTR void configResetISR() {
     noInterrupts();
     BricksOS.handleConfigResetRequest();
     interrupts();
@@ -68,14 +68,14 @@ void NahsBricksOS::handover() {
     //------------------------------------------
     // deliver ident if it is set and Brick just initalized
     if (!RTCmem.isValid() && FSdata["id"] != "") {
-        out_json.getOrAddMember("id").set(FSdata["id"]);
+        out_json["id"].set(FSdata["id"]);
     }
 
     //------------------------------------------
     // deliver sketchMD5 if requested
     if (RTCdata->sketchMD5Requested) {
         RTCdata->sketchMD5Requested = false;
-        out_json.getOrAddMember("m").set(ESP.getSketchMD5());
+        out_json["m"].set(ESP.getSketchMD5());
     }
 
     //------------------------------------------
@@ -93,7 +93,7 @@ void NahsBricksOS::handover() {
     //------------------------------------------
     // evaluate own requests
     if (in_json.containsKey("r")) {
-        for (JsonVariant value : in_json.getMember("r").as<JsonArray>()) {
+        for (JsonVariant value : in_json["r"].as<JsonArray>()) {
             switch(value.as<uint8_t>()) {
                 case 11:
                     RTCdata->sketchMD5Requested = true;
